@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+
+    <script src="../lib/promise/promise-1.0.0.js" type="text/javascript"></script>
+    <script type="text/javascript">
+/* 
+About MDN by Mozilla Contributors is licensed under CC-BY-SA 2.5.
+from https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise 
+*/
+var promiseCount = 0;
+function testPromise() {
+  var thisPromiseCount = ++promiseCount;
+
+  var log = document.getElementById('log');
+  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') 開始 (<small>同期処理開始</small>)<br/>');
+
+  var p1 = new Promise(               /* 新しいプロミスを作成: 1～3秒後に結果を返すことを約束します */
+    function(resolve, reject) {       /* リゾルバ関数はプロミスの成功または失敗に応じて呼ばれます */
+      log.insertAdjacentHTML('beforeend', thisPromiseCount + ') プロミス開始 (<small>非同期処理開始</small>)<br/>');
+      window.setTimeout(              /* 非同期を作成するための一例です */
+        function() {
+          resolve(thisPromiseCount); /* 約束を果たしました! */
+        }, Math.random() * 2000 + 1000);
+    });
+
+  p1.then(                            /* プロミスが成功した時に何をするかを定めます */
+    function(val) {                   /* メッセージと値を記録します */
+      log.insertAdjacentHTML('beforeend', val + ') プロミス成功 (<small>非同期処理終了</small>)<br/>');
+    });
+
+  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') プロミスは作成されました (<small>同期処理終了</small>)<br/>');
+}
+</script>
+</head>
+<body>
+<button onClick="testPromise()">testPromise</button>
+<div id="log">
+</div>
+</body>
+</html>
