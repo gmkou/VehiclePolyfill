@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+
+    <script type="text/javascript">
+
+'use strict';
+
+//constructor
+var Animal = function(name) {
+    this.setName(name);
+}
+
+function currenttime() {
+	 var currentdate = new Date(); 
+	 var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+	return datetime;
+}
+
+//method
+Animal.prototype.bowName = function() {
+    return new Promise(
+        function(resolve, reject) {
+	   console.log("プロミス開始:" + currenttime());
+	   window.setTimeout( // 非同期で発火させるためのサンプル
+	           function() {
+		      resolve(currenttime());  //他の関数を呼び出すテスト
+		   }, Math.random() * 2000 + 1000);
+	}
+    );
+}
+Animal.prototype.setName = function(name) {
+    this.name = name;
+}
+
+function testDog() {
+    var dog = new Animal("dog");
+    var p1 = dog.bowName();
+    p1.then(
+        function(val) {
+	  console.log("プロミス成功:" + val);
+	 }
+    );
+    console.log("プロミスが生成されました:"+currenttime());
+}
+
+</script>
+</head>
+<body>
+<button onClick="testDog()">test</button>
+</div>
+</body>
+</html>
