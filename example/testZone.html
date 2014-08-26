@@ -8,9 +8,12 @@
     <script type="text/javascript">
 
 var zone = new Zone;
+var zone2 = new Zone;
 
 console.log(zone.driver.value);
 console.log(zone.driver.Front);
+console.log(zone.driver.equals(zone2.driver)); //true
+console.log(zone.driver.equals(zone.passenger)); //false
 
 </script>
 </head>
