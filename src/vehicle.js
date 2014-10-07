@@ -101,7 +101,7 @@ interface VehicleSpeed : VehicleCommonDataType {
     readonly    attribute unsigned short speed;
 };
 */
-var VehicleSpeedInterface = function () {
+var VehicleSpeedInterface = (function () {
     vs = new VehicleCommonDataType();
     vs._callback = undefined;
     vs.speed = 100;
@@ -125,7 +125,7 @@ var VehicleSpeedInterface = function () {
     }
     
     return vs;
-}
+})();
 
 /** Vehicle Interface
 [NoInterfaceObject]
@@ -149,9 +149,13 @@ interface Vehicle {
     readonly    attribute VehicleInterface deadReckoning;
 };
 */
-var Vehicle = new Object();
-Vehicle.vehicleSpeed = new VehicleSpeedInterface();
 
 
 /** set to navigator */
-navigator.vehicle = Vehicle;
+navigator.vehicle = (
+  function () {
+    return {
+      vehicleSpeed : VehicleSpeedInterface,
+    }
+  })();
+
