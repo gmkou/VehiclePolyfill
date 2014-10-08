@@ -13,7 +13,22 @@ describe("Zone", function() {
 	expect(zone.Rear).toEqual("Rear");
 	expect(zone.Center).toEqual("Center");
     });
+
+  describe("attributes", function() {
+    beforeEach(function() {
+      var driver = zone.driver;
+      var modDriver = new Zone();
+      modDriver.driver.value = [zone.Rear, zone.Center];
+      zone.driver = modDriver;
+    });
     
+    it("read only attributes", function() {
+      expect(zone.driver).toEqual(driver);
+    });
+    it("not modified attributes", function() {
+      expect(driver.equals(modDriver.driver)).toEqual(false);
+    });
+  });
     describe("Functions", function() {
 	var driver;
 	var passernger;

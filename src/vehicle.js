@@ -31,39 +31,41 @@ interface Zone {
     boolean contains (Zone zone);
 };
 */
-var Zone = function() {
-    z = new Object();
-    z.Front = "Front";
-    z.Middle = "Middle";
-    z.Right = "Right";
-    z.Left = "Left";
-    z.Rear = "Rear";
-    z.Center = "Center";
-    z.value = "";
-    z.__defineGetter__("driver", function() { 
-	retval = new Zone;
-	retval.value = [this.Front,this.Right] ;
-	return retval; 
-    });
-    z.__defineGetter__("passenger", function() { 
-	retval = new Zone;
-	retval.value = [this.Front,this.Left] ;
-	return retval; 
-    });
-    z.equals = function(zone) {
-        return (JSON.stringify(this.value.sort()) === JSON.stringify(zone.value.sort()));
-    };
-    z.contains = function(zone) {
-	for (var i=0; i<zone.value.length; i++) {
-	    if (this.value.indexOf(zone.value[i]) < 0) {
-		return false;
-	    }
-	};
-	return true;
+var Zone = (
+  function() {
+    const Front = "Front";
+    const Middle = "Middle";
+    const Right = "Right";
+    const Left = "Left";
+    const Rear = "Rear";
+    const Center = "Center";
+    value = "";
+    
+    return {
+      get driver() {
+        retval = new Zone;
+        retval.value = [this.Front,this.Right] ;
+        return retval; 
+      },
+      get passenger() {
+        retval = new Zone;
+        retval.value = [this.Front,this.Left] ;
+        return retval; 
+      },
+      
+      equals : function(zone) {
+                 return (JSON.stringify(this.value.sort()) === JSON.stringify(zone.value.sort()));
+               },
+      contains : function(zone) {
+                   for (var i=0; i<zone.value.length; i++) {
+                     if (this.value.indexOf(zone.value[i]) < 0) {
+	               return false;
+                     }
+                   };
+                   return true;
+                 }
     }
-
-    return z;
-}
+})();
 
 /** VehicleInterface Interface
 [NoInterfaceObject]
