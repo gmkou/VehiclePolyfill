@@ -116,7 +116,12 @@ var VehicleSpeedInterface = (
     var self = this;
 
     return {
-      speed : privateSpeed ,
+      get speed() {
+        return privateSpeed;
+      },
+      set speed(sp) {
+        /* do nothing */
+      },
       get : function () {
         return new Promise( function (resolve, reject) {
 	                      resolve(VehicleSpeedInterface);

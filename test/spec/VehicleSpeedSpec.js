@@ -23,6 +23,12 @@ describe("VehicleSpeed", function(){
     done();
   });
 
+  it("readonly Attribute vehicleSpeedInterface.speed", function(done){
+    vehicle.vehicleSpeed.speed = 200;
+    expect(retval.speed).toBe(100);
+    done();
+  });
+
 /*
   it("vehicleSpeed.subscribe()", function(done){
     vehicleSpeedSub = vehicle.vehicleSpeed.subscribe(function(vehicleSpeed) {
