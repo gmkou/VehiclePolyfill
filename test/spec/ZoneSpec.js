@@ -24,9 +24,7 @@ describe("Zone", function() {
 	});
 	
 	it("Equals", function() {
-	    console.log("hoge");
             expect(driver.equals(zone.driver)).toEqual(true);
-	    console.log("fuga");
             expect(driver.equals(passenger)).toEqual(false);
 	});
 	
