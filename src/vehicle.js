@@ -77,12 +77,33 @@ interface VehicleInterface {
     readonly    attribute Zone[] zones;
 };
 */
-var VehicleInterface = function() {
-    Object.defineProperty(this, "zones", {
-        writable : false,
-    });
-    this._ = {};
-}
+var VehicleInterface = (
+  function() {
+    return {
+      get zones() {
+        /* @todo: implement */
+      }, 
+      get : function () {
+        return new Promise( function (resolve, reject) {
+	                      resolve(VehicleSpeedInterface);
+	                    })
+      },
+      subscribe : function ( callback, zone ) {
+	// @todo : need to implement zone for vehicleSpeedInterface
+        // Really? can't have different speed by zone.
+	this._callback = callback;
+	if (this._callback != undefined) {
+	  return 1;
+	} else {
+	  return 0;
+	}
+      },
+      unsubscribe : function ( handle ) {
+	this._callback = undefined;
+	return 0;
+      }
+    }
+})();
 
 /** VehicleCommonDataType Interface
 [NoInterfaceObject]
@@ -123,25 +144,6 @@ var VehicleSpeedInterface = (
       },
       set speed(sp) {
         /* do nothing */
-      },
-      get : function () {
-        return new Promise( function (resolve, reject) {
-	                      resolve(VehicleSpeedInterface);
-	                    })
-      },
-      subscribe : function ( callback, zone ) {
-	// @todo : need to implement zone for vehicleSpeedInterface
-        // Really? can't have different speed by zone.
-	this._callback = callback;
-	if (this._callback != undefined) {
-	  return 1;
-	} else {
-	  return 0;
-	}
-      },
-      unsubscribe : function ( handle ) {
-	this._callback = undefined;
-	return 0;
       }
     }
 })();
