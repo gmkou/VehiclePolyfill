@@ -89,10 +89,17 @@ interface VehicleCommonDataType {
     readonly    attribute DOMTimeStamp? timeStamp;
 };
 */
-var VehicleCommonDataType =  function() {
+var VehicleCommonDataType =  (
+  function() {
     this.zone = null;
     this.timestamp = null;
-}
+
+    return {
+      timeStamp : function () {
+                         Math.round(new Date().getTime() / 1000)
+                       },
+    }
+})();
 
 /* --------------------------------------- */
 /* VehicleSpeed Interface 
@@ -100,32 +107,38 @@ var VehicleCommonDataType =  function() {
 interface VehicleSpeed : VehicleCommonDataType {
     readonly    attribute unsigned short speed;
 };
+
 */
-var VehicleSpeedInterface = function () {
-    vs = new VehicleCommonDataType();
-    vs._callback = undefined;
-    vs.speed = 100;
-    vs.get = function () {
-	return new Promise( function (resolve, reject) {
-	    resolve(vs);
-	});
-    }
-    vs.subscribe = function ( callback, zone ) {
+
+var VehicleSpeedInterface = (
+  function () {
+    var privateSpeed = 100;
+    var self = this;
+
+    return {
+      speed : privateSpeed ,
+      get : function () {
+        return new Promise( function (resolve, reject) {
+	                      resolve(VehicleSpeedInterface);
+	                    })
+      },
+      subscribe : function ( callback, zone ) {
 	// @todo : need to implement zone for vehicleSpeedInterface
+        // Really? can't have different speed by zone.
 	this._callback = callback;
 	if (this._callback != undefined) {
-	    return 1;
+	  return 1;
 	} else {
-	    return 0;
+	  return 0;
 	}
-    }
-    vs.unsubscribe = function ( handle ) {
+      },
+      unsubscribe : function ( handle ) {
 	this._callback = undefined;
 	return 0;
+      }
     }
-    
-    return vs;
-}
+})();
+VehicleSpeedInterface.prototype = Object.create(VehicleCommonDataType);
 
 /** Vehicle Interface
 [NoInterfaceObject]
@@ -149,9 +162,13 @@ interface Vehicle {
     readonly    attribute VehicleInterface deadReckoning;
 };
 */
-var Vehicle = new Object();
-Vehicle.vehicleSpeed = new VehicleSpeedInterface();
 
 
 /** set to navigator */
-navigator.vehicle = Vehicle;
+navigator.vehicle = (
+  function () {
+    return {
+      vehicleSpeed : VehicleSpeedInterface,
+    }
+  })();
+
