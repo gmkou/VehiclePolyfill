@@ -77,53 +77,12 @@ interface VehicleInterface {
     readonly    attribute Zone[] zones;
 };
 */
-var VehicleInterface = function() {
-    Object.defineProperty(this, "zones", {
-        writable : false,
-    });
-    this._ = {};
-}
-
-/** VehicleCommonDataType Interface
-[NoInterfaceObject]
-interface VehicleCommonDataType {
-    readonly    attribute Zone?         zone;
-    readonly    attribute DOMTimeStamp? timeStamp;
-};
-*/
-var VehicleCommonDataType =  (
+var VehicleInterface = (
   function() {
-    this.zone = null;
-    this.timestamp = null;
-
     return {
-      timeStamp : function () {
-                         Math.round(new Date().getTime() / 1000)
-                       },
-    }
-})();
-
-/* --------------------------------------- */
-/* VehicleSpeed Interface 
-[NoInterfaceObject]
-interface VehicleSpeed : VehicleCommonDataType {
-    readonly    attribute unsigned short speed;
-};
-
-*/
-
-var VehicleSpeedInterface = (
-  function () {
-    var privateSpeed = 100;
-    var self = this;
-
-    return {
-      get speed() {
-        return privateSpeed;
-      },
-      set speed(sp) {
-        /* do nothing */
-      },
+      get zones() {
+        /* @todo: implement */
+      }, 
       get : function () {
         return new Promise( function (resolve, reject) {
 	                      resolve(VehicleSpeedInterface);
@@ -145,7 +104,58 @@ var VehicleSpeedInterface = (
       }
     }
 })();
+
+/** VehicleCommonDataType Interface
+[NoInterfaceObject]
+interface VehicleCommonDataType {
+    readonly    attribute Zone?         zone;
+    readonly    attribute DOMTimeStamp? timeStamp;
+};
+*/
+var VehicleCommonDataType =  (
+  function() {
+    this.zone = null;
+    this.timestamp = null;
+
+    return {
+      timeStamp : function () {
+                         Math.round(new Date().getTime() / 1000)
+                       },
+    }
+})();
+
+/* --------------------------------------- */
+function augment( receivingClass, givingClass) {
+  for (var methodName in givingClass) {
+    if (!Object.hasOwnProperty( receivingClass, methodName ) ) {
+      receivingClass[methodName] = givingClass[methodName];
+    }
+  }
+}
+
+/* --------------------------------------- */
+/* VehicleSpeed Interface 
+[NoInterfaceObject]
+interface VehicleSpeed : VehicleCommonDataType {
+    readonly    attribute unsigned short speed;
+};
+
+*/
+
+var VehicleSpeedInterface = (
+  function () {
+    var privateSpeed = 100;
+    return {
+      get speed() {
+        return privateSpeed;
+      },
+      set speed(sp) {
+        /* do nothing */
+      }
+    }
+})();
 VehicleSpeedInterface.prototype = Object.create(VehicleCommonDataType);
+augment(VehicleSpeedInterface, VehicleInterface);
 
 /** Vehicle Interface
 [NoInterfaceObject]
