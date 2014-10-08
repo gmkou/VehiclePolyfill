@@ -125,6 +125,15 @@ var VehicleCommonDataType =  (
 })();
 
 /* --------------------------------------- */
+function augment( receivingClass, givingClass) {
+  for (var methodName in givingClass) {
+    if (!Object.hasOwnProperty( receivingClass, methodName ) ) {
+      receivingClass[methodName] = givingClass[methodName];
+    }
+  }
+}
+
+/* --------------------------------------- */
 /* VehicleSpeed Interface 
 [NoInterfaceObject]
 interface VehicleSpeed : VehicleCommonDataType {
@@ -136,8 +145,6 @@ interface VehicleSpeed : VehicleCommonDataType {
 var VehicleSpeedInterface = (
   function () {
     var privateSpeed = 100;
-    var self = this;
-
     return {
       get speed() {
         return privateSpeed;
@@ -148,6 +155,7 @@ var VehicleSpeedInterface = (
     }
 })();
 VehicleSpeedInterface.prototype = Object.create(VehicleCommonDataType);
+augment(VehicleSpeedInterface, VehicleInterface);
 
 /** Vehicle Interface
 [NoInterfaceObject]
